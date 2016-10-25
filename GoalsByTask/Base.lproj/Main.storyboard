@@ -29,53 +29,67 @@
                                     <segue destination="d2B-g5-Zxb" kind="unwind" unwindAction="cancelToGoalsViewController:" id="g5A-ul-RSV"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create a Goal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CDC-he-QLY">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Goal Creation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CDC-he-QLY">
                                 <rect key="frame" x="248" y="20" width="104" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="a7H-0Z-jOb"/>
                                     <constraint firstAttribute="width" constant="104" id="tts-1N-SyZ"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.54231417179999997" green="0.54229795930000002" blue="0.54230719800000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uz1-de-gdm">
-                                <rect key="frame" x="158" y="104" width="230" height="22"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h3d-4j-cf1">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="22"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="enter name for goal here" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="lBc-SB-LFU">
-                                        <rect key="frame" x="50" y="0.0" width="180" height="22"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
-                                </subviews>
-                            </stackView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="enter name for goal here" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="lBc-SB-LFU">
+                                <rect key="frame" x="20" y="114" width="560" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="34" id="Ypu-nX-0UU"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8pV-wQ-Irj">
-                                <rect key="frame" x="248" y="188" width="104" height="30"/>
+                                <rect key="frame" x="161" y="161" width="278" height="41"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <state key="normal" title="Create Goal"/>
                                 <connections>
                                     <action selector="createGoal:" destination="GI9-si-bJi" eventType="touchUpInside" id="FXq-DL-iUU"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Goal:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h3d-4j-cf1">
+                                <rect key="frame" x="20" y="84" width="40" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="34" id="ebS-U6-3z0"/>
+                                    <constraint firstAttribute="width" constant="40" id="vO7-Ay-IaP"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="8pV-wQ-Irj" firstAttribute="top" secondItem="uz1-de-gdm" secondAttribute="bottom" constant="62" id="0kD-tq-6dM"/>
+                            <constraint firstItem="lBc-SB-LFU" firstAttribute="trailing" secondItem="ecf-3r-Xk3" secondAttribute="trailingMargin" id="6ro-IS-m5O"/>
                             <constraint firstItem="CDC-he-QLY" firstAttribute="centerX" secondItem="ecf-3r-Xk3" secondAttribute="centerX" id="AVh-8P-Ml8"/>
                             <constraint firstItem="bAR-qK-1Ag" firstAttribute="top" secondItem="khS-9R-Etq" secondAttribute="bottom" id="Amj-XL-Fm8"/>
-                            <constraint firstItem="8pV-wQ-Irj" firstAttribute="trailing" secondItem="CDC-he-QLY" secondAttribute="trailing" id="Ig5-Wr-wHi"/>
+                            <constraint firstItem="lBc-SB-LFU" firstAttribute="leading" secondItem="ecf-3r-Xk3" secondAttribute="leadingMargin" id="ERZ-D2-eYg"/>
+                            <constraint firstItem="8pV-wQ-Irj" firstAttribute="trailing" secondItem="CDC-he-QLY" secondAttribute="trailing" constant="87" id="Ig5-Wr-wHi"/>
+                            <constraint firstItem="lBc-SB-LFU" firstAttribute="top" secondItem="h3d-4j-cf1" secondAttribute="bottom" constant="-4" id="Kf4-Pa-j2e"/>
                             <constraint firstItem="bAR-qK-1Ag" firstAttribute="leading" secondItem="ecf-3r-Xk3" secondAttribute="leadingMargin" id="MJ7-n3-h01"/>
+                            <constraint firstItem="h3d-4j-cf1" firstAttribute="leading" secondItem="ecf-3r-Xk3" secondAttribute="leadingMargin" id="NcL-cf-RoJ"/>
                             <constraint firstItem="CDC-he-QLY" firstAttribute="top" secondItem="khS-9R-Etq" secondAttribute="bottom" id="UhH-z5-qsq"/>
-                            <constraint firstItem="uz1-de-gdm" firstAttribute="centerX" secondItem="ecf-3r-Xk3" secondAttribute="centerX" id="ZsY-RC-BIn"/>
+                            <constraint firstItem="V3V-Uz-9RS" firstAttribute="top" secondItem="h3d-4j-cf1" secondAttribute="bottom" constant="482" id="VkL-NR-cXo"/>
+                            <constraint firstItem="8pV-wQ-Irj" firstAttribute="top" secondItem="lBc-SB-LFU" secondAttribute="bottom" constant="13" id="aU3-ec-FNh"/>
                             <constraint firstItem="8pV-wQ-Irj" firstAttribute="centerX" secondItem="ecf-3r-Xk3" secondAttribute="centerX" id="hbq-fM-0f5"/>
                             <constraint firstItem="bAR-qK-1Ag" firstAttribute="leading" secondItem="ecf-3r-Xk3" secondAttribute="leadingMargin" id="k2N-HD-S3u"/>
-                            <constraint firstItem="V3V-Uz-9RS" firstAttribute="top" secondItem="8pV-wQ-Irj" secondAttribute="bottom" constant="382" id="zOd-wV-RJV"/>
+                            <constraint firstItem="lBc-SB-LFU" firstAttribute="top" secondItem="bAR-qK-1Ag" secondAttribute="bottom" constant="64" id="mw4-Lm-MiN"/>
+                            <constraint firstItem="V3V-Uz-9RS" firstAttribute="top" secondItem="8pV-wQ-Irj" secondAttribute="bottom" constant="398" id="zOd-wV-RJV"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="VkL-NR-cXo"/>
+                                <exclude reference="zOd-wV-RJV"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="goalNameTextField" destination="lBc-SB-LFU" id="Czo-6f-SGc"/>
@@ -106,7 +120,7 @@
                                         <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iNG-sf-yeQ" id="Sgn-ed-7u8">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>

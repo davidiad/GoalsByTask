@@ -35,5 +35,13 @@ class GoalViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
+    // Cancels textfield editing when user touches outside the textfield
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        
+        view.endEditing(true)
+        
+        super.touchesBegan(touches, withEvent:event)
+    }
 
 }
