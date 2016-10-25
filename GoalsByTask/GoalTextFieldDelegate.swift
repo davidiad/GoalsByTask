@@ -12,7 +12,6 @@ import UIKit
 
 class GoalTextFieldDelegate: NSObject, UITextFieldDelegate {
     
-    //let defaultText = "MEME TEXT GOES HERE"
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         var result = true
@@ -24,7 +23,6 @@ class GoalTextFieldDelegate: NSObject, UITextFieldDelegate {
             let entryNotTooLong = textToCheck.characters.count < 50
             result = entryNotTooLong
         }
-        //textField.text = textField.text!.uppercaseString
         return result
     }
     
@@ -32,20 +30,14 @@ class GoalTextFieldDelegate: NSObject, UITextFieldDelegate {
         textField.borderStyle = UITextBorderStyle.Bezel
         textField.clearButtonMode = .Always
         textField.textAlignment = NSTextAlignment.Center
-        //textField.placeholder = defaultText
         textField.adjustsFontSizeToFitWidth = true
         textField.minimumFontSize = 18
-        //textField.autocapitalizationType = .AllCharacters
         textField.autocorrectionType = .No
         
-        // While editing, set a background color for the meme text, so the user has a cue that they are editing text
-        let bgcolor = UIColor(hue: 0.62, saturation: 0.2, brightness: 0.9, alpha: 0.7)
+        // While editing, set a background color for the text, so the user has a cue that they are editing text
+        let bgcolor = UIColor(hue: 0.72, saturation: 0.2, brightness: 0.9, alpha: 0.7)
         textField.backgroundColor = bgcolor
-        //textField.layer.cornerRadius = 8.0;
-        // Only remove default text, not user entered text
-//        if textField.text == defaultText {
-//            textField.text = ""
-//        }
+
     }
     
     
@@ -54,9 +46,8 @@ class GoalTextFieldDelegate: NSObject, UITextFieldDelegate {
         // Get rid of the bg color when done editing
         textField.backgroundColor = UIColor.clearColor()
         textField.clearButtonMode = .Never
-        //textField.text = textField.text!.uppercaseString
         
-        // notification to save the context
+        // notification to save the name change into the managed object context
         NSNotificationCenter.defaultCenter().postNotificationName(saveNameChangeNotificationKey, object: self)
         
     }

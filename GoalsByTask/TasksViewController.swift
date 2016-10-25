@@ -36,10 +36,7 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         let fetchRequest = NSFetchRequest(entityName: "Task")
         fetchRequest.predicate = NSPredicate(format: "goal == %@", self.currentGoal!)
-        //fetchRequest.predicate = NSPredicate(format: "inCurrentList == %@", true)
-        //fetchRequest.predicate = NSPredicate(format: "numTimesFound > 0")
         
-        // Add Sort Descriptors
         let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
         
@@ -67,10 +64,6 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(saveNameChange), name: saveNameChangeNotificationKey, object: nil)
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
     // MARK: - Unwind segue
     @IBAction func cancelToGoalsViewController(segue:UIStoryboardSegue) {
@@ -105,8 +98,6 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("taskcell", forIndexPath: indexPath)
         
-        //let cell:UITableViewCell=UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "mycell")
-        
         if let task = fetchedResultsController.objectAtIndexPath(indexPath) as? Task {
             
             cell.textLabel?.text = task.name
@@ -139,9 +130,6 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
             }
             break;
         case .Update:
-            //            if let indexPath = indexPath, let cell = wordTable.cellForRowAtIndexPath(indexPath) as? WordListCell {
-            //                configureCell(cell, atIndexPath: indexPath)
-            //            }
             break;
         case .Move:
             if let indexPath = indexPath {
@@ -154,17 +142,5 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
             break;
         }
     }
-    
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

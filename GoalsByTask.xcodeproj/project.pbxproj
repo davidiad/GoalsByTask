@@ -13,9 +13,7 @@
 		63E4A2A11DBE596D002BC4CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63E4A2A01DBE596D002BC4CE /* Assets.xcassets */; };
 		63E4A2A41DBE596D002BC4CE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 63E4A2A21DBE596D002BC4CE /* LaunchScreen.storyboard */; };
 		63E4A2AC1DBE59FC002BC4CE /* GoalsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E4A2AB1DBE59FC002BC4CE /* GoalsTableViewController.swift */; };
-		63E4A2B31DBE5DF3002BC4CE /* Goal+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E4A2AF1DBE5DF3002BC4CE /* Goal+CoreDataProperties.swift */; };
 		63E4A2B41DBE5DF3002BC4CE /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E4A2B01DBE5DF3002BC4CE /* Goal.swift */; };
-		63E4A2B51DBE5DF3002BC4CE /* Task+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E4A2B11DBE5DF3002BC4CE /* Task+CoreDataProperties.swift */; };
 		63E4A2B61DBE5DF3002BC4CE /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E4A2B21DBE5DF3002BC4CE /* Task.swift */; };
 		63E4A2B91DBE6290002BC4CE /* GoalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E4A2B81DBE6290002BC4CE /* GoalViewController.swift */; };
 		63E4A2BB1DBE816F002BC4CE /* TasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E4A2BA1DBE816F002BC4CE /* TasksViewController.swift */; };
@@ -32,9 +30,7 @@
 		63E4A2A31DBE596D002BC4CE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		63E4A2A51DBE596D002BC4CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		63E4A2AB1DBE59FC002BC4CE /* GoalsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalsTableViewController.swift; sourceTree = "<group>"; };
-		63E4A2AF1DBE5DF3002BC4CE /* Goal+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Goal+CoreDataProperties.swift"; path = "../Goal+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		63E4A2B01DBE5DF3002BC4CE /* Goal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Goal.swift; path = ../Goal.swift; sourceTree = "<group>"; };
-		63E4A2B11DBE5DF3002BC4CE /* Task+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Task+CoreDataProperties.swift"; path = "../Task+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		63E4A2B21DBE5DF3002BC4CE /* Task.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Task.swift; path = ../Task.swift; sourceTree = "<group>"; };
 		63E4A2B81DBE6290002BC4CE /* GoalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalViewController.swift; sourceTree = "<group>"; };
 		63E4A2BA1DBE816F002BC4CE /* TasksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksViewController.swift; sourceTree = "<group>"; };
@@ -91,9 +87,7 @@
 		63E4A2B71DBE5E0B002BC4CE /* ManagedDataObjects */ = {
 			isa = PBXGroup;
 			children = (
-				63E4A2AF1DBE5DF3002BC4CE /* Goal+CoreDataProperties.swift */,
 				63E4A2B01DBE5DF3002BC4CE /* Goal.swift */,
-				63E4A2B11DBE5DF3002BC4CE /* Task+CoreDataProperties.swift */,
 				63E4A2B21DBE5DF3002BC4CE /* Task.swift */,
 			);
 			name = ManagedDataObjects;
@@ -172,12 +166,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				63E4A2B61DBE5DF3002BC4CE /* Task.swift in Sources */,
-				63E4A2B31DBE5DF3002BC4CE /* Goal+CoreDataProperties.swift in Sources */,
 				63E4A29F1DBE596D002BC4CE /* GoalsByTask.xcdatamodeld in Sources */,
 				63E4A2BD1DBEB928002BC4CE /* GoalTextFieldDelegate.swift in Sources */,
 				63E4A2AC1DBE59FC002BC4CE /* GoalsTableViewController.swift in Sources */,
 				63E4A2BF1DBEBEBE002BC4CE /* GoalsNotificationKeys.swift in Sources */,
-				63E4A2B51DBE5DF3002BC4CE /* Task+CoreDataProperties.swift in Sources */,
 				63E4A2B91DBE6290002BC4CE /* GoalViewController.swift in Sources */,
 				63E4A2B41DBE5DF3002BC4CE /* Goal.swift in Sources */,
 				63E4A2971DBE596D002BC4CE /* AppDelegate.swift in Sources */,
@@ -339,6 +331,7 @@
 				63E4A2AA1DBE596D002BC4CE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

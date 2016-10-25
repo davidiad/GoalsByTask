@@ -19,11 +19,6 @@ class GoalsTableViewController: UITableViewController, NSFetchedResultsControlle
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
     
-    // MARK: - NSFetchedResultsController
-//    lazy var sharedContext = {
-//        CoreDataStackManager.sharedInstance().managedObjectContext
-//    }()
-    
     lazy var fetchedResultsController: NSFetchedResultsController = {
         
         let fetchRequest = NSFetchRequest(entityName: "Goal")
@@ -59,13 +54,14 @@ class GoalsTableViewController: UITableViewController, NSFetchedResultsControlle
     }
     
     //MARK: - Verifying valid order
+    //(in theory should never get out of order, but just in case)
     
+    // checks that all goals have an order value. Would be good to check that all values are unique, and don't skip
     func validateOrder() {
         for goal: Goal in fetchedResultsController.fetchedObjects as! [Goal] {
             if goal.order == nil {
                 resetGoalOrder()
                 return // there is at least 1 goal without an order value, so reset them all
-                // (in theory whouldn't happen)
             }
         }
     }
@@ -106,15 +102,8 @@ class GoalsTableViewController: UITableViewController, NSFetchedResultsControlle
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("goalcell", forIndexPath: indexPath)
-
-        //let cell:UITableViewCell=UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "mycell")
         
-//        if let goal = fetchedResultsController.objectAtIndexPath(indexPath) as? Goal {
-//        
-//            cell.textLabel?.text = goal.name
-//     
-//        }
+        let cell = tableView.dequeueReusableCellWithIdentifier("goalcell", forIndexPath: indexPath)
         
         configureCell(cell, atIndexPath: indexPath)
         
@@ -126,14 +115,13 @@ class GoalsTableViewController: UITableViewController, NSFetchedResultsControlle
             
             cell.textLabel?.text = goal.name
             
-            
         }
     }
     
     // MARK:- FetchedResultsController delegate protocol
     
     func controllerWillChangeContent(controller: NSFetchedResultsController) {
-        if !goalsAreMoving {
+        if !goalsAreMoving { // flag to avoid updating the table rows in the middle of moving
             tableView.beginUpdates()
         }
 
@@ -172,20 +160,6 @@ class GoalsTableViewController: UITableViewController, NSFetchedResultsControlle
         }
     }
     
-    
-    //MARK:- Table View Data Source Methods
-    
-//    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-//        if let _ = fetchedResultsController.sections {
-//            return 1
-//        }
-//        
-//        return 0
-//    }
-    
-
-    
-
     
     // Override to support conditional editing of the table view.
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
@@ -251,47 +225,14 @@ class GoalsTableViewController: UITableViewController, NSFetchedResultsControlle
         
         goalFromRow.order = tempTo
         
-//        for goal: Goal in fetchedResultsController.fetchedObjects as! [Goal] {
-//            if goal.order?.integerValue > tempFrom && goal.order?.integerValue <= tempTo {
-//                let newOrder = (goal.order?.integerValue)! + incrementAmount
-//                goal.order = newOrder
-//            }
-//        }
-        
 
         
         goalsAreMoving = false
         
-        // var movingGoals: [Goal] = fetchedResultsController.fetchedObjects as? [Goal]
-
-        
-//        for i in Int(goalFromRow.order!) ..< Int(goalToRow.order!) {
-//            movingGoals.append(fetchedResultsController.objectAtIndexPath(i) as Goal)
-//        }
-        
-//        for goal: Goal in fetchedResultsController.fetchedObjects as! [Goal] {
-//            
-//        }
-        
-        
-        
-//       let temp = goalFromRow.order
-//        goalFromRow.order = goalToRow.order
-//        goalToRow.order = temp
-//        managedObjectContext.deleteObject(goalFromRow)
-//        managedObjectContext.insertObject(goalToRow)
-        
-
-        // from to til from, order -= 1
-        
-        
     }
     
 
-    
-    // Override to support conditional rearranging of the table view.
     override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
         return true
     }
     
@@ -299,7 +240,6 @@ class GoalsTableViewController: UITableViewController, NSFetchedResultsControlle
     
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
@@ -310,7 +250,6 @@ class GoalsTableViewController: UITableViewController, NSFetchedResultsControlle
             }
         } else {
             
-        //if segue.identifier == "goalDetail" {
             if let destination = segue.destinationViewController as? TasksViewController {
                 if let indexPath = tableView.indexPathForSelectedRow {
                     destination.currentGoal = fetchedResultsController.objectAtIndexPath(indexPath) as? Goal
@@ -319,6 +258,5 @@ class GoalsTableViewController: UITableViewController, NSFetchedResultsControlle
         }
     }
     
- 
 
 }
