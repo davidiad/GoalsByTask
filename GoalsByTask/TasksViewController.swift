@@ -69,6 +69,7 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
     @IBAction func cancelToGoalsViewController(segue:UIStoryboardSegue) {
     }
     
+    // MARK: - Textfield editing
     // Cancels textfield editing when user touches outside the textfield
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
       

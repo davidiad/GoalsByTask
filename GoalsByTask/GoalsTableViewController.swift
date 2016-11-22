@@ -55,7 +55,6 @@ class GoalsTableViewController: UITableViewController, NSFetchedResultsControlle
     
     //MARK: - Verifying valid order
     //(in theory should never get out of order, but just in case)
-    
     // checks that all goals have an order value. Would be good to check that all values are unique, and don't skip
     func validateOrder() {
         for goal: Goal in fetchedResultsController.fetchedObjects as! [Goal] {
@@ -78,10 +77,6 @@ class GoalsTableViewController: UITableViewController, NSFetchedResultsControlle
         appDelegate.saveContext()
     }
     
-    
-    // MARK: - Unwind segue
-    @IBAction func cancelToGoalsViewController(segue:UIStoryboardSegue) {
-    }
 
     // MARK: - Table view data source
 
@@ -258,5 +253,8 @@ class GoalsTableViewController: UITableViewController, NSFetchedResultsControlle
         }
     }
     
+    // MARK:  Unwind segue
+    @IBAction func cancelToGoalsViewController(segue:UIStoryboardSegue) {
+    }
 
 }
