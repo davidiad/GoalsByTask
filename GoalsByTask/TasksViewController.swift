@@ -15,6 +15,8 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     @IBOutlet weak var goalName: UITextField!
     
+    @IBOutlet weak var feedbackLabel: UILabel!
+    
     @IBOutlet weak var taskNameTextField: UITextField!
     
     @IBAction func createTask(sender: AnyObject) {
@@ -23,6 +25,7 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
         newTask.goal = currentGoal
         appDelegate.saveContext()
         
+        feedbackLabel.text = ("\(newTaskName) has been added to the task list")
         taskNameTextField.text = ""
     }
     
@@ -110,6 +113,7 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
         if let task = fetchedResultsController.objectAtIndexPath(indexPath) as? Task {
             
             cell.textLabel?.text = task.name
+            
             
         }
         return cell

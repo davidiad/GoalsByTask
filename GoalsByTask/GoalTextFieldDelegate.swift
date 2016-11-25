@@ -35,7 +35,7 @@ class GoalTextFieldDelegate: NSObject, UITextFieldDelegate {
         textField.autocorrectionType = .No
         
         // While editing, set a background color for the text, so the user has a cue that they are editing text
-        let bgcolor = UIColor(hue: 0.72, saturation: 0.2, brightness: 0.9, alpha: 0.7)
+        let bgcolor = UIColor(hue: 0.72, saturation: 0.1, brightness: 0.9, alpha: 1.0)
         textField.backgroundColor = bgcolor
 
     }
@@ -44,8 +44,8 @@ class GoalTextFieldDelegate: NSObject, UITextFieldDelegate {
     func textFieldDidEndEditing(textField: UITextField) {
         textField.borderStyle = UITextBorderStyle.None
         // Get rid of the bg color when done editing
-        textField.backgroundColor = UIColor.clearColor()
-        textField.clearButtonMode = .Never
+        textField.backgroundColor = UIColor.whiteColor()
+        textField.clearButtonMode = .Always
         
         // notification to save the name change into the managed object context
         NSNotificationCenter.defaultCenter().postNotificationName(saveNameChangeNotificationKey, object: self)
