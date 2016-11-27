@@ -14,26 +14,40 @@ class GoalViewController: UIViewController {
 
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+    let goalTextFieldDelegate = GoalTextFieldDelegate()
 
     var goalOrder: Int?
     
     @IBOutlet weak var goalNameTextField: UITextField!
+    @IBOutlet weak var feedbackLabel: UILabel!
     
     @IBAction func createGoal(sender: AnyObject) {
-        // init a new managed object
-        let newGoalName = goalNameTextField.text
-        //TODO: - what if no text for the name has been entered?
-        let newGoal = Goal(name: newGoalName!, context: managedObjectContext)
-        newGoal.order = goalOrder
         
-        appDelegate.saveContext()
-        //TODO: dispatch async call to make sure context save is complete before dismissing VC?
-        dismissViewControllerAnimated(true, completion: nil)
+        view.endEditing(true) // dismiss the keyboard
+        
+        guard let newGoalName = goalNameTextField.text else {
+            feedbackLabel.text = "Please give the goal a name before adding it"
+            return
+        }
+        
+        if newGoalName == "" {
+            feedbackLabel.text = "Please name the goal before adding it"
+        } else {
+            
+            // init a new managed object
+            let newGoal = Goal(name: newGoalName, context: managedObjectContext)
+            newGoal.order = goalOrder
+            
+            appDelegate.saveContext()
+            //TODO: dispatch async call to make sure context save is complete before dismissing VC?
+            dismissViewControllerAnimated(true, completion: nil)
+        }
     }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        goalNameTextField.delegate = goalTextFieldDelegate
     }
     
     // Cancels textfield editing when user touches outside the textfield
