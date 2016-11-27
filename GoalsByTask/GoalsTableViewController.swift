@@ -13,6 +13,7 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
     
     @IBOutlet var goalsTableView: UITableView!
     
+ //   @IBOutlet weak var blurringView: UIView!
     
     @IBAction func editing(sender: UIBarButtonItem) {
         self.editing = !self.editing
@@ -53,6 +54,12 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
             print("\(fetchError), \(fetchError.localizedDescription)")
         }
         validateOrder()
+ 
+//        let blurEffect = UIBlurEffect(style: .ExtraLight)
+//        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+//        blurEffectView.frame = blurringView.frame
+//        
+//        blurringView.insertSubview(blurEffectView, atIndex: 0)
         
     }
     
