@@ -20,13 +20,24 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
     @IBOutlet weak var taskNameTextField: UITextField!
     
     @IBAction func createTask(sender: AnyObject) {
-        let newTaskName = taskNameTextField.text
-        let newTask = Task(name: newTaskName!, context: managedObjectContext)
-        newTask.goal = currentGoal
-        appDelegate.saveContext()
         
-        feedbackLabel.text = ("\(newTaskName) has been added to the task list")
-        taskNameTextField.text = ""
+        view.endEditing(true) // dismiss the keyboard
+        
+        guard let newTaskName = taskNameTextField.text else {
+            feedbackLabel.text = "Please give the task a name before adding it"
+            return
+        }
+        
+        if newTaskName == "" {
+            feedbackLabel.text = "Please name the task before adding it to the list"
+        } else {
+            let newTask = Task(name: newTaskName, context: managedObjectContext)
+            newTask.goal = currentGoal
+            appDelegate.saveContext()
+            
+            feedbackLabel.text = ("\(newTaskName) has been added to the task list")
+            taskNameTextField.text = "" // reset the textfield to blank after the task has been added to list
+        }
     }
     
     var currentGoal: Goal?
@@ -65,6 +76,9 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
         goalName.text = currentGoal?.name
         goalName.delegate = goalTextFieldDelegate
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(saveNameChange), name: saveNameChangeNotificationKey, object: nil)
+        
+        taskNameTextField.layer.borderColor = UIColor( red: 252/255, green: 106/255, blue:8/255, alpha: 1.0 ).CGColor
+        taskNameTextField.layer.borderWidth = 2.0
     }
     
     
@@ -85,8 +99,21 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     func saveNameChange() {
         // TODO: what if currentGoal is nil?
-        currentGoal?.name = goalName.text
-        appDelegate.saveContext()
+        if currentGoal != nil {
+            if goalName.text == "" {
+                feedbackLabel.text = "Please don't leave the Goal name blank"
+                // if the goal name was blank, replace it with the current name
+                if currentGoal != nil {
+                    goalName.text = currentGoal?.name
+                }
+            } else {
+                currentGoal?.name = goalName.text
+                appDelegate.saveContext()
+                feedbackLabel.text = "The goal is now: \((currentGoal?.name)!)"
+            }
+        } else {
+            feedbackLabel.text = "There is no current goal"
+        }
     }
     
     // MARK: - Table view data source
