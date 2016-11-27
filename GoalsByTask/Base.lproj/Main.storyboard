@@ -374,6 +374,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="goalsTableView" destination="lFR-2C-kM5" id="WDF-v8-xPk"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Ln-FB-1mE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

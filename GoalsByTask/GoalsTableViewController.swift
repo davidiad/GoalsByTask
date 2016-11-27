@@ -9,7 +9,10 @@
 import UIKit
 import CoreData
 
-class GoalsTableViewController: UITableViewController, NSFetchedResultsControllerDelegate {
+class GoalsTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
+    
+    @IBOutlet var goalsTableView: UITableView!
+    
     
     @IBAction func editing(sender: UIBarButtonItem) {
         self.editing = !self.editing
@@ -80,7 +83,7 @@ class GoalsTableViewController: UITableViewController, NSFetchedResultsControlle
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         guard let _ = fetchedResultsController.sections else {
             return 0
         }
@@ -88,7 +91,7 @@ class GoalsTableViewController: UITableViewController, NSFetchedResultsControlle
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let numRows = fetchedResultsController.fetchedObjects?.count else {
             return 3
         }
@@ -96,7 +99,7 @@ class GoalsTableViewController: UITableViewController, NSFetchedResultsControlle
     }
 
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("goalcell", forIndexPath: indexPath)
         
@@ -117,29 +120,29 @@ class GoalsTableViewController: UITableViewController, NSFetchedResultsControlle
     
     func controllerWillChangeContent(controller: NSFetchedResultsController) {
         if !goalsAreMoving { // flag to avoid updating the table rows in the middle of moving
-            tableView.beginUpdates()
+            goalsTableView.beginUpdates()
         }
 
     }
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
-        tableView.endUpdates()
+        goalsTableView.endUpdates()
     }
     
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         switch (type) {
         case .Insert:
             if let indexPath = newIndexPath {
-                tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                goalsTableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             }
             break;
         case .Delete:
             if let indexPath = indexPath {
-                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                goalsTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             }
             break;
         case .Update:
-            if let indexPath = indexPath, let cell = tableView.cellForRowAtIndexPath(indexPath) {
+            if let indexPath = indexPath, let cell = goalsTableView.cellForRowAtIndexPath(indexPath) {
                 configureCell(cell, atIndexPath: indexPath)
             }
             break;
@@ -157,7 +160,7 @@ class GoalsTableViewController: UITableViewController, NSFetchedResultsControlle
     
     
     // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
     }
@@ -165,7 +168,7 @@ class GoalsTableViewController: UITableViewController, NSFetchedResultsControlle
 
     
     // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             // Fetch Record
             let goal = fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
@@ -184,7 +187,7 @@ class GoalsTableViewController: UITableViewController, NSFetchedResultsControlle
     
     
     // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
         
         goalsAreMoving = true
         // TODO: - put a dispatch async here, to make sure all moves are done before setting goalsAreMoving to false?
@@ -227,11 +230,15 @@ class GoalsTableViewController: UITableViewController, NSFetchedResultsControlle
     }
     
 
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
     }
     
-
+    // To allow the editing button to work in a generic view controller (not needed in a TableViewController)
+    override func setEditing(editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        goalsTableView.setEditing(editing, animated: animated)
+    }
     
     // MARK: - Navigation
 
@@ -246,7 +253,7 @@ class GoalsTableViewController: UITableViewController, NSFetchedResultsControlle
         } else {
             
             if let destination = segue.destinationViewController as? TasksViewController {
-                if let indexPath = tableView.indexPathForSelectedRow {
+                if let indexPath = goalsTableView.indexPathForSelectedRow {
                     destination.currentGoal = fetchedResultsController.objectAtIndexPath(indexPath) as? Goal
                 }
             }
