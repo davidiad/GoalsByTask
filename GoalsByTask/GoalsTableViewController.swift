@@ -147,6 +147,21 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
         case .Delete:
             if let indexPath = indexPath {
                 goalsTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                // update the order (priority) of the cells remaining after the deletion
+                
+                let numGoals = (controller.fetchedObjects?.count)!
+                for i in indexPath.row ..< numGoals {
+                    let nextIndexPath = NSIndexPath(forRow: i, inSection: 0)
+                    if let cell = goalsTableView.cellForRowAtIndexPath(nextIndexPath) as? GoalCell {
+                        if let goal = fetchedResultsController.fetchedObjects![i] as? Goal {
+                            goal.order = i // since order counting is from 1, and index path counting is from 0, setting to i reduces the order by 1
+                            
+                            cell.priority.text = String(goal.order)
+                            //cell.goalname.text = goal.name
+                        }
+                    }
+                }
+                feedbackLabel.text = "You have \(numGoals) goals in your list"
             }
             break;
         case .Update:
@@ -155,7 +170,7 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
             }
             break;
         case .Move:
-            // when the order is being edited by user, update the cell to match the new order
+            // when the order is being edited by user, the cell is moved, so update the cell to match the new order
             if let indexPath = indexPath, let cell = goalsTableView.cellForRowAtIndexPath(indexPath) {
                 configureCell(cell, atIndexPath: indexPath)
             }
@@ -174,11 +189,13 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
     
     // Override to support editing the table view.
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
         if editingStyle == .Delete {
             // Fetch Record
             let goal = fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
             // Delete Record
             managedObjectContext.deleteObject(goal)
+            appDelegate.saveContext() // swipe to delete doesn't save the deletion otherwise
             // Delete the row from the data source
             //tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         } else if editingStyle == .Insert {
