@@ -139,30 +139,38 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
     
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         switch (type) {
+            
         case .Insert:
+
             if let indexPath = newIndexPath {
                 goalsTableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             }
+            //TODO: feedbak -- Added goal X to your list, \n, then count
+            feedbackLabel.text = "You have \((controller.fetchedObjects?.count)!) goals in your list"
             break;
+            
         case .Delete:
             if let indexPath = indexPath {
                 goalsTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-                // update the order (priority) of the cells remaining after the deletion
                 
+                // update the order (priority) of the cells remaining after the deletion
                 let numGoals = (controller.fetchedObjects?.count)!
                 for i in indexPath.row ..< numGoals {
                     let nextIndexPath = NSIndexPath(forRow: i, inSection: 0)
                     if let cell = goalsTableView.cellForRowAtIndexPath(nextIndexPath) as? GoalCell {
                         if let goal = fetchedResultsController.fetchedObjects![i] as? Goal {
-                            goal.order = i // since order counting is from 1, and index path counting is from 0, setting to i reduces the order by 1
+                            // since order counting is from 1, and index path counting is from 0,
+                            // setting to i reduces the order by 1, accounting for the deleted row
+                            goal.order = i + 1
                             
-                            cell.priority.text = String(goal.order)
-                            //cell.goalname.text = goal.name
+                            cell.priority.text = String(goal.order!)
                         }
                     }
                 }
+                
                 feedbackLabel.text = "You have \(numGoals) goals in your list"
             }
+
             break;
         case .Update:
             if let indexPath = indexPath, let cell = goalsTableView.cellForRowAtIndexPath(indexPath) {
@@ -274,8 +282,11 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
         if segue.identifier == "createGoal" {
             if let destination = segue.destinationViewController as? GoalViewController {
                 // send the current # of fetched objects to use in setting the initial order # for the new object
-                // (adds the new goal to the end of the list)
-                destination.goalOrder = fetchedResultsController.fetchedObjects?.count
+                guard let currentCount = fetchedResultsController.fetchedObjects?.count else {
+                    destination.goalOrder = 1 // There are no existing goals
+                    return
+                }
+                destination.goalOrder = currentCount + 1 // add the new goal to the end of the list
             }
         } else {
             

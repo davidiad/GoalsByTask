@@ -45,6 +45,7 @@ class GoalViewController: UIViewController {
     }
     
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         goalNameTextField.delegate = goalTextFieldDelegate

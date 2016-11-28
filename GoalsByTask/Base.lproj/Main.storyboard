@@ -470,7 +470,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="Oxt-P6-hs4">
                             <connections>
-                                <segue destination="GI9-si-bJi" kind="presentation" id="4GI-su-HUn"/>
+                                <segue destination="GI9-si-bJi" kind="presentation" identifier="createGoal" id="4GI-su-HUn"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
