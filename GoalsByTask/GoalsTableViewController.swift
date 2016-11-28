@@ -43,6 +43,16 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
     
     var goalsAreMoving: Bool = false
     
+    var numGoals: Int {
+        get {
+            guard let currentCount = fetchedResultsController.fetchedObjects?.count else {
+                // There are no existing goals
+                return 0
+            }
+            return currentCount
+        }
+    }
+    
     //MARK: - App lifecycle
     
     override func viewDidLoad() {
@@ -146,7 +156,7 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
                 goalsTableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             }
             //TODO: feedbak -- Added goal X to your list, \n, then count
-            feedbackLabel.text = "You have \((controller.fetchedObjects?.count)!) goals in your list"
+            feedbackLabel.text = "You have \(numGoals) goals in your list"
             break;
             
         case .Delete:
@@ -154,7 +164,6 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
                 goalsTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
                 
                 // update the order (priority) of the cells remaining after the deletion
-                let numGoals = (controller.fetchedObjects?.count)!
                 for i in indexPath.row ..< numGoals {
                     let nextIndexPath = NSIndexPath(forRow: i, inSection: 0)
                     if let cell = goalsTableView.cellForRowAtIndexPath(nextIndexPath) as? GoalCell {
@@ -170,13 +179,14 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
                 
                 feedbackLabel.text = "You have \(numGoals) goals in your list"
             }
-
             break;
+            
         case .Update:
             if let indexPath = indexPath, let cell = goalsTableView.cellForRowAtIndexPath(indexPath) {
                 configureCell(cell, atIndexPath: indexPath)
             }
             break;
+            
         case .Move:
             // when the order is being edited by user, the cell is moved, so update the cell to match the new order
             if let indexPath = indexPath, let cell = goalsTableView.cellForRowAtIndexPath(indexPath) {
@@ -282,11 +292,7 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
         if segue.identifier == "createGoal" {
             if let destination = segue.destinationViewController as? GoalViewController {
                 // send the current # of fetched objects to use in setting the initial order # for the new object
-                guard let currentCount = fetchedResultsController.fetchedObjects?.count else {
-                    destination.goalOrder = 1 // There are no existing goals
-                    return
-                }
-                destination.goalOrder = currentCount + 1 // add the new goal to the end of the list
+                destination.goalOrder = numGoals + 1 // add the new goal to the end of the list
             }
         } else {
             
