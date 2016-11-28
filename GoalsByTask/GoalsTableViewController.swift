@@ -155,13 +155,27 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
             if let indexPath = newIndexPath {
                 goalsTableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             }
-            //TODO: feedbak -- Added goal X to your list, \n, then count
-            feedbackLabel.text = "You have \(numGoals) goals in your list"
+            var insertedGoalName = ""
+            guard let goal = anObject as? Goal else {
+                insertedGoalName = "A goal"
+                return
+            }
+            insertedGoalName = goal.name!
+            feedbackLabel.text = "\(insertedGoalName) has been added to the goal list" + "\n" + "You have \(numGoals) goals in your list"
+            //TODO: scroll to the new goal automatically
             break;
             
         case .Delete:
             if let indexPath = indexPath {
+                // save the name of the goal before deleting it (to use in user feedback, below)
+                var deletedGoalName = ""
+                guard let goal = anObject as? Goal else {
+                    deletedGoalName = "A goal"
+                    return
+                }
+                deletedGoalName = goal.name!
                 goalsTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                
                 
                 // update the order (priority) of the cells remaining after the deletion
                 for i in indexPath.row ..< numGoals {
@@ -171,13 +185,12 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
                             // since order counting is from 1, and index path counting is from 0,
                             // setting to i reduces the order by 1, accounting for the deleted row
                             goal.order = i + 1
-                            
                             cell.priority.text = String(goal.order!)
                         }
                     }
                 }
                 
-                feedbackLabel.text = "You have \(numGoals) goals in your list"
+                feedbackLabel.text = "\(deletedGoalName) has been deleted from the goal list" + "\n" + "You have \(numGoals) goals in your list"
             }
             break;
             
