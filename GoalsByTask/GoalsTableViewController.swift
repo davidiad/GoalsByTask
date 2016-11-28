@@ -13,6 +13,7 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
     
     @IBOutlet var goalsTableView: UITableView!
     
+    @IBOutlet weak var feedbackLabel: UILabel!
  //   @IBOutlet weak var blurringView: UIView!
     
     @IBAction func editing(sender: UIBarButtonItem) {
@@ -54,12 +55,8 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
             print("\(fetchError), \(fetchError.localizedDescription)")
         }
         validateOrder()
- 
-//        let blurEffect = UIBlurEffect(style: .ExtraLight)
-//        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-//        blurEffectView.frame = blurringView.frame
-//        
-//        blurringView.insertSubview(blurEffectView, atIndex: 0)
+ //TODO: guard statement for unwrapping fetched
+        feedbackLabel.text = "You have \(fetchedResultsController.fetchedObjects!.count) goals in your list"
         
     }
     
@@ -117,8 +114,12 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
     
     func configureCell(cell: UITableViewCell, atIndexPath: NSIndexPath) {
         if let goal = fetchedResultsController.objectAtIndexPath(atIndexPath) as? Goal {
-            
-            cell.textLabel?.text = goal.name
+            if let goalcell = cell as? GoalCell {
+                
+                let newOrder = atIndexPath.row + 1
+                goalcell.priority.text = String(newOrder)
+                goalcell.goalname.text = goal.name
+            }
             
         }
     }
@@ -154,13 +155,10 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
             }
             break;
         case .Move:
-//            if let indexPath = indexPath {
-//                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-//            }
-//            
-//            if let newIndexPath = newIndexPath {
-//                tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Fade)
-//            }
+            // when the order is being edited by user, update the cell to match the new order
+            if let indexPath = indexPath, let cell = goalsTableView.cellForRowAtIndexPath(indexPath) {
+                configureCell(cell, atIndexPath: indexPath)
+            }
             break;
         }
     }
@@ -202,10 +200,16 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
         let goalFromRow = fetchedResultsController.objectAtIndexPath(fromIndexPath) as! Goal
         let goalToRow = fetchedResultsController.objectAtIndexPath(toIndexPath) as! Goal
         
-        let tempFrom = goalFromRow.order?.integerValue
-        let tempTo = goalToRow.order?.integerValue
+        guard let tempFrom = goalFromRow.order?.integerValue else {
+            feedbackLabel.text = "No order was set for the goal to move from"
+            return
+        }
+        guard let tempTo = goalToRow.order?.integerValue else {
+            feedbackLabel.text = "No order was set for the goal to move to"
+            return
+        }
 
-        let n = tempTo! - tempFrom!
+        let n = tempTo - tempFrom
         
         // depending on whether or not tempTo < tempFrom, the goals are moved either up by 1 or down by 1
         switch n {
@@ -230,8 +234,6 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
         
         goalFromRow.order = tempTo
         
-
-        
         goalsAreMoving = false
         
     }
@@ -255,6 +257,7 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
         if segue.identifier == "createGoal" {
             if let destination = segue.destinationViewController as? GoalViewController {
                 // send the current # of fetched objects to use in setting the initial order # for the new object
+                // (adds the new goal to the end of the list)
                 destination.goalOrder = fetchedResultsController.fetchedObjects?.count
             }
         } else {

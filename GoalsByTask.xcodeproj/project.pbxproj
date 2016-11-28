@@ -19,6 +19,7 @@
 		63E4A2BB1DBE816F002BC4CE /* TasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E4A2BA1DBE816F002BC4CE /* TasksViewController.swift */; };
 		63E4A2BD1DBEB928002BC4CE /* GoalTextFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E4A2BC1DBEB928002BC4CE /* GoalTextFieldDelegate.swift */; };
 		63E4A2BF1DBEBEBE002BC4CE /* GoalsNotificationKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E4A2BE1DBEBEBE002BC4CE /* GoalsNotificationKeys.swift */; };
+		63E58A2C1DEBA479002B838C /* GoalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E58A2B1DEBA479002B838C /* GoalCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		63E4A2BA1DBE816F002BC4CE /* TasksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksViewController.swift; sourceTree = "<group>"; };
 		63E4A2BC1DBEB928002BC4CE /* GoalTextFieldDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalTextFieldDelegate.swift; sourceTree = "<group>"; };
 		63E4A2BE1DBEBEBE002BC4CE /* GoalsNotificationKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalsNotificationKeys.swift; sourceTree = "<group>"; };
+		63E58A2B1DEBA479002B838C /* GoalCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +82,7 @@
 				63E4A2BA1DBE816F002BC4CE /* TasksViewController.swift */,
 				63E4A2BC1DBEB928002BC4CE /* GoalTextFieldDelegate.swift */,
 				63E4A2BE1DBEBEBE002BC4CE /* GoalsNotificationKeys.swift */,
+				63E58A2B1DEBA479002B838C /* GoalCell.swift */,
 			);
 			path = GoalsByTask;
 			sourceTree = "<group>";
@@ -173,6 +176,7 @@
 				63E4A2B91DBE6290002BC4CE /* GoalViewController.swift in Sources */,
 				63E4A2B41DBE5DF3002BC4CE /* Goal.swift in Sources */,
 				63E4A2971DBE596D002BC4CE /* AppDelegate.swift in Sources */,
+				63E58A2C1DEBA479002B838C /* GoalCell.swift in Sources */,
 				63E4A2BB1DBE816F002BC4CE /* TasksViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
