@@ -16,13 +16,15 @@ class GoalCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+        let bgColorView = UIView()
+        bgColorView.backgroundColor = UIColor(hue: 0.59, saturation: 0.15, brightness: 1.0, alpha: 1.0)
+        selectedBackgroundView = bgColorView
     }
     
 

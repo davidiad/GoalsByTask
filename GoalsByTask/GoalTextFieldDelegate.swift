@@ -28,7 +28,7 @@ class GoalTextFieldDelegate: NSObject, UITextFieldDelegate {
     
     func textFieldDidBeginEditing(textField: UITextField) {
         textField.borderStyle = UITextBorderStyle.Bezel
-        textField.clearButtonMode = .Always
+        textField.clearButtonMode = .WhileEditing
         textField.textAlignment = NSTextAlignment.Center
         textField.adjustsFontSizeToFitWidth = true
         textField.minimumFontSize = 18
@@ -44,7 +44,7 @@ class GoalTextFieldDelegate: NSObject, UITextFieldDelegate {
         textField.borderStyle = UITextBorderStyle.None
         // Get rid of the bg color when done editing
         textField.backgroundColor = UIColor.whiteColor()
-        textField.clearButtonMode = .Always
+        textField.clearButtonMode = .WhileEditing
         
         // notification to save the name change into the managed object context
         NSNotificationCenter.defaultCenter().postNotificationName(saveNameChangeNotificationKey, object: self)

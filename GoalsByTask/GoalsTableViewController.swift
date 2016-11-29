@@ -14,7 +14,6 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
     @IBOutlet var goalsTableView: UITableView!
     
     @IBOutlet weak var feedbackLabel: UILabel!
- //   @IBOutlet weak var blurringView: UIView!
     
     @IBAction func editing(sender: UIBarButtonItem) {
         self.editing = !self.editing
@@ -315,7 +314,7 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
-    // MARK:  Unwind segue
+    // MARK:  Unwind segue from Create Goal view controller
     @IBAction func cancelToGoalsViewController(segue:UIStoryboardSegue) {
     }
     

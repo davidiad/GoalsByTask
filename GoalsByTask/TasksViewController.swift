@@ -89,7 +89,7 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
         taskNameTextField.delegate = self
         taskNameTextField.layer.borderColor = UIColor( red: 252/255, green: 106/255, blue:8/255, alpha: 1.0 ).CGColor
         taskNameTextField.layer.borderWidth = 2.0
-        
+              
         let notificationCenter = NSNotificationCenter.defaultCenter()
         notificationCenter.addObserver(self,
                                        selector: #selector(textFieldDidChange(_:)),
@@ -120,12 +120,13 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
     func textFieldDidBeginEditing(textField: UITextField) {
 
         textField.adjustsFontSizeToFitWidth = true
-        
+        textField.borderStyle = UITextBorderStyle.Bezel
         // While editing, set a background color for the text, so the user has a cue that they are editing text
         textField.backgroundColor = UIColor(hue: 0.1, saturation: 0.09, brightness: 1.0, alpha: 1.0)
     }
     
     func textFieldDidEndEditing(textField: UITextField) {
+        textField.borderStyle = UITextBorderStyle.None
         // Get rid of the bg color when done editing
         textField.backgroundColor = UIColor.whiteColor()
     }
