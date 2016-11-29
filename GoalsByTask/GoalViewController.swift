@@ -39,9 +39,10 @@ class GoalViewController: UIViewController {
             let newGoal = Goal(name: newGoalName, context: managedObjectContext)
             newGoal.order = goalOrder
             
-            appDelegate.saveContext()
-            //TODO: dispatch async call to make sure context save is complete before dismissing VC?
-            dismissViewControllerAnimated(true, completion: nil)
+            dispatch_async(dispatch_get_main_queue()) {
+                self.appDelegate.saveContext()
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }
         }
     }
     

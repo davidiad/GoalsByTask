@@ -38,7 +38,9 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
         } else {
             let newTask = Task(name: newTaskName, context: managedObjectContext)
             newTask.goal = currentGoal
-            appDelegate.saveContext()
+            dispatch_async(dispatch_get_main_queue()) {
+                self.appDelegate.saveContext()
+            }
             
             feedbackLabel.text = ("\(newTaskName) has been added to the task list")
             taskNameTextField.text = "" // reset the textfield to blank after the task has been added to list
@@ -177,7 +179,6 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
     //MARK: - Core Data
     
     func saveNameChange() {
-        // TODO: what if currentGoal is nil?
         if currentGoal != nil {
             if goalName.text == "" {
                 feedbackLabel.text = "Please don't leave the Goal name blank"
@@ -188,7 +189,9 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
                 
             } else {
                 currentGoal?.name = goalName.text
-                appDelegate.saveContext()
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.appDelegate.saveContext()
+                }
                 feedbackLabel.text = "The goal is now: \((currentGoal?.name)!)"
                 // save the data to pass back to parent view controller
                 goalNameEdited = goalName.text

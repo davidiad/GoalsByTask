@@ -86,7 +86,9 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
                 }
             }
         }
-        appDelegate.saveContext()
+        dispatch_async(dispatch_get_main_queue()) {
+            self.appDelegate.saveContext()
+        }
     }
     
 
@@ -140,7 +142,9 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
     // De/activate the edit button for the table
     @IBAction func editing(sender: UIBarButtonItem) {
         self.editing = !self.editing
-        appDelegate.saveContext()
+        dispatch_async(dispatch_get_main_queue()) {
+            self.appDelegate.saveContext()
+        }
     }
     
     // MARK:- Table View delegate
@@ -159,14 +163,17 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
             let goal = fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
             // Delete Record
             managedObjectContext.deleteObject(goal)
-            appDelegate.saveContext() // swipe to delete doesn't save the deletion otherwise
-            // Delete the row from the data source
-            //tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            dispatch_async(dispatch_get_main_queue()) {
+                self.appDelegate.saveContext() // swipe to delete doesn't save the deletion otherwise
+            }
         } else if editingStyle == .Insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
             let goal = fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
-            managedObjectContext.insertObject(goal)
-            //TODO: dispatch async here?
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                self.managedObjectContext.insertObject(goal)
+                self.appDelegate.saveContext()
+            }
         }
     }
     
