@@ -21,6 +21,7 @@ class GoalViewController: UIViewController {
     @IBOutlet weak var goalNameTextField: UITextField!
     @IBOutlet weak var feedbackLabel: UILabel!
     
+    @IBOutlet weak var createGoalButton: UIButton!
     @IBAction func createGoal(sender: AnyObject) {
         
         view.endEditing(true) // dismiss the keyboard
@@ -49,6 +50,25 @@ class GoalViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         goalNameTextField.delegate = goalTextFieldDelegate
+        
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.addObserver(self,
+                                       selector: #selector(textFieldDidChange(_:)),
+                                       name: UITextFieldTextDidChangeNotification,
+                                       object: nil)
+    }
+    
+    func textFieldDidChange(sender : AnyObject) {
+        if let notification = sender as? NSNotification,
+            textFieldChanged = notification.object as? UITextField
+            where textFieldChanged == goalNameTextField {
+            if goalNameTextField.text == "" {
+                // disable the Create Goal button
+                createGoalButton.enabled = false
+            } else {
+                createGoalButton.enabled = true
+            }
+        }
     }
     
     // Cancels textfield editing when user touches outside the textfield

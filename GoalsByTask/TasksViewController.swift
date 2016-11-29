@@ -9,8 +9,12 @@
 import UIKit
 import CoreData
 
-class TasksViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
-
+class TasksViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
+    
+    // vars to hold data to pass back to parent view controller
+    var goalNameEdited: String?
+    var numTasksAdded: Int = 0
+    
     @IBOutlet weak var tasksTableView: UITableView!
     
     @IBOutlet weak var goalName: UITextField!
@@ -19,6 +23,7 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     @IBOutlet weak var taskNameTextField: UITextField!
     
+    @IBOutlet weak var addTaskButton: UIButton!
     @IBAction func createTask(sender: AnyObject) {
         
         view.endEditing(true) // dismiss the keyboard
@@ -37,6 +42,8 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
             
             feedbackLabel.text = ("\(newTaskName) has been added to the task list")
             taskNameTextField.text = "" // reset the textfield to blank after the task has been added to list
+            addTaskButton.enabled = false // Disable button because textfield is now empty again
+            numTasksAdded += 1
         }
     }
     
@@ -64,6 +71,8 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
     //MARK: - App lifecycle
     
     override func viewDidLoad() {
+        
+        
         super.viewDidLoad()
         
         do {
@@ -73,14 +82,77 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
             print("\(fetchError), \(fetchError.localizedDescription)")
         }
         
-        goalName.text = currentGoal?.name
+        navigationController?.delegate = self // to allow passing data back to parent VC
         goalName.delegate = goalTextFieldDelegate
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(saveNameChange), name: saveNameChangeNotificationKey, object: nil)
+        goalName.text = currentGoal?.name
         
+        taskNameTextField.delegate = self
         taskNameTextField.layer.borderColor = UIColor( red: 252/255, green: 106/255, blue:8/255, alpha: 1.0 ).CGColor
         taskNameTextField.layer.borderWidth = 2.0
+        
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.addObserver(self,
+                                       selector: #selector(textFieldDidChange(_:)),
+                                       name: UITextFieldTextDidChangeNotification,
+                                       object: nil)
+        
+        notificationCenter.addObserver(self,
+                                       selector: #selector(saveNameChange),
+                                       name: saveNameChangeNotificationKey,
+                                       object: nil)
+        
     }
     
+    //MARK:- Textfield delegate methods
+    func textFieldDidChange(sender : AnyObject) {
+        if let notification = sender as? NSNotification,
+            textFieldChanged = notification.object as? UITextField
+            where textFieldChanged == taskNameTextField {
+            if taskNameTextField.text == "" {
+                // disable the Create Task button
+                addTaskButton.enabled = false
+            } else {
+                addTaskButton.enabled = true
+            }
+        }
+    }
+    
+    func textFieldDidBeginEditing(textField: UITextField) {
+
+        textField.adjustsFontSizeToFitWidth = true
+        
+        // While editing, set a background color for the text, so the user has a cue that they are editing text
+        textField.backgroundColor = UIColor(hue: 0.1, saturation: 0.09, brightness: 1.0, alpha: 1.0)
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        // Get rid of the bg color when done editing
+        textField.backgroundColor = UIColor.whiteColor()
+    }
+    
+    //MARK:-
+    
+    func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
+        if let controller = viewController as? GoalsTableViewController {
+            // pass data back to parent VC.
+            // goalNameEdited should be nil if the goal name was not changed
+            var feedbackLine1 = ""
+            var feedbackLine2 = ""
+            if goalNameEdited != nil {
+                feedbackLine1 = "The goal is now: \(goalNameEdited!)"
+            } else {
+                feedbackLine1 = "The goal: \((currentGoal?.name)!)"
+            }
+            if numTasksAdded > 0 {
+                var pluralize = "tasks have"
+                if numTasksAdded == 1 {
+                    pluralize = "task has"
+                }
+                feedbackLine2 = "\(String(numTasksAdded)) \(pluralize) been added to the goal"
+            }
+            controller.feedbackLabel.text = feedbackLine1 + "\n" + feedbackLine2
+        }
+    }
     
     // MARK: - Unwind segue
     @IBAction func cancelToGoalsViewController(segue:UIStoryboardSegue) {
@@ -95,6 +167,12 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
         super.touchesBegan(touches, withEvent:event)
     }
     
+    // Dismiss keyboard when tapping Return
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
     //MARK: - Core Data
     
     func saveNameChange() {
@@ -106,10 +184,13 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
                 if currentGoal != nil {
                     goalName.text = currentGoal?.name
                 }
+                
             } else {
                 currentGoal?.name = goalName.text
                 appDelegate.saveContext()
                 feedbackLabel.text = "The goal is now: \((currentGoal?.name)!)"
+                // save the data to pass back to parent view controller
+                goalNameEdited = goalName.text
             }
         } else {
             feedbackLabel.text = "There is no current goal"

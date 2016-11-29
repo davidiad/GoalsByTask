@@ -48,14 +48,20 @@
                                     <constraint firstItem="djt-y5-hbT" firstAttribute="leading" secondItem="Vna-8Z-sCJ" secondAttribute="leading" constant="2" id="zcV-aU-ZEz"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create a Goal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CDC-he-QLY">
-                                <rect key="frame" x="236" y="26" width="127" height="25.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CDC-he-QLY">
+                                <rect key="frame" x="242.5" y="26" width="114" height="21.5"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="a7H-0Z-jOb"/>
                                     <constraint firstAttribute="width" constant="104" id="tts-1N-SyZ"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="Create a Goal">
+                                        <attributes>
+                                            <color key="NSColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <font key="NSFont" size="18" name="HelveticaNeue-Medium"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
                                 <nil key="highlightedColor"/>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -64,7 +70,7 @@
                                     </mask>
                                 </variation>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8pV-wQ-Irj">
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8pV-wQ-Irj">
                                 <rect key="frame" x="20" y="67" width="137" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <state key="normal" title="Create New Goal"/>
@@ -83,7 +89,7 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="dnQ-MH-LGB">
-                                        <rect key="frame" x="181.5" y="14.5" width="238" height="16.5"/>
+                                        <rect key="frame" x="181" y="14" width="238" height="16.5"/>
                                         <attributedString key="attributedText">
                                             <fragment content="Enter a name for your new goal above">
                                                 <attributes>
@@ -135,6 +141,7 @@
                     <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="createGoalButton" destination="8pV-wQ-Irj" id="EK7-cY-aO9"/>
                         <outlet property="feedbackLabel" destination="dnQ-MH-LGB" id="I31-EF-r1S"/>
                         <outlet property="goalNameTextField" destination="djt-y5-hbT" id="Gyr-fi-7qs"/>
                     </connections>
@@ -167,9 +174,9 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="yYS-ic-GKn">
-                                        <rect key="frame" x="239" y="14.5" width="122.5" height="16.5"/>
+                                        <rect key="frame" x="152.5" y="5.5" width="296" height="33"/>
                                         <attributedString key="attributedText">
-                                            <fragment content="Feedback message">
+                                            <fragment content="In the boxes above, edit the goal name, or add tasks to the goal.">
                                                 <attributes>
                                                     <color key="NSColor" red="0.096236079931259155" green="0.095350787043571472" blue="0.09538695216178894" alpha="1" colorSpace="calibratedRGB"/>
                                                     <font key="NSFont" size="14" name="HelveticaNeue"/>
@@ -288,8 +295,8 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8xn-1E-65J">
-                                <rect key="frame" x="398" y="168" width="182" height="34"/>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8xn-1E-65J">
+                                <rect key="frame" x="20" y="168" width="182" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <state key="normal" title="Add New Task To Goal"/>
                                 <connections>
@@ -302,7 +309,6 @@
                             <constraint firstItem="WTF-He-E6V" firstAttribute="top" secondItem="PEl-m7-Lgp" secondAttribute="bottom" constant="8" symbolic="YES" id="1K4-2C-YLH"/>
                             <constraint firstItem="WTF-He-E6V" firstAttribute="trailing" secondItem="aHc-R8-pF7" secondAttribute="trailing" constant="-20" id="2fl-eY-818"/>
                             <constraint firstItem="bwR-Fb-mgj" firstAttribute="leading" secondItem="aHc-R8-pF7" secondAttribute="leading" constant="20" id="2xf-tx-XrK"/>
-                            <constraint firstItem="8xn-1E-65J" firstAttribute="trailing" secondItem="aHc-R8-pF7" secondAttribute="trailing" constant="-20" id="52j-eH-FTm"/>
                             <constraint firstAttribute="trailing" secondItem="bwR-Fb-mgj" secondAttribute="trailing" constant="20" id="8U9-fh-fge"/>
                             <constraint firstItem="0xa-0F-X6u" firstAttribute="leading" secondItem="aHc-R8-pF7" secondAttribute="leading" id="KYL-L0-eDp"/>
                             <constraint firstItem="Xwk-RG-hgg" firstAttribute="top" secondItem="8xn-1E-65J" secondAttribute="bottom" constant="-6" id="Kz7-qq-edL"/>
@@ -310,6 +316,7 @@
                             <constraint firstItem="WTF-He-E6V" firstAttribute="leading" secondItem="aHc-R8-pF7" secondAttribute="leading" constant="20" id="SQj-YU-cVM"/>
                             <constraint firstItem="Xwk-RG-hgg" firstAttribute="trailing" secondItem="aHc-R8-pF7" secondAttribute="trailingMargin" id="SiW-Xz-eBU"/>
                             <constraint firstItem="Xwk-RG-hgg" firstAttribute="top" secondItem="WTF-He-E6V" secondAttribute="bottom" constant="44" id="X0w-6a-pFC"/>
+                            <constraint firstItem="8xn-1E-65J" firstAttribute="leading" secondItem="aHc-R8-pF7" secondAttribute="leading" constant="20" id="d2a-oj-tc3"/>
                             <constraint firstItem="HBB-PN-M5k" firstAttribute="top" secondItem="0xa-0F-X6u" secondAttribute="bottom" id="dq7-b2-x0l"/>
                             <constraint firstItem="bwR-Fb-mgj" firstAttribute="top" secondItem="Xwk-RG-hgg" secondAttribute="bottom" constant="7" id="ia4-QB-Vh0"/>
                             <constraint firstItem="HBB-PN-M5k" firstAttribute="top" secondItem="bwR-Fb-mgj" secondAttribute="bottom" constant="61" id="jsq-b8-c9J"/>
@@ -318,6 +325,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="addTaskButton" destination="8xn-1E-65J" id="py7-jU-43F"/>
                         <outlet property="feedbackLabel" destination="yYS-ic-GKn" id="tN5-gJ-VTS"/>
                         <outlet property="goalName" destination="hHT-r3-13p" id="f2O-SY-1V0"/>
                         <outlet property="taskNameTextField" destination="Xwk-RG-hgg" id="S5Y-KK-v46"/>
@@ -462,7 +470,7 @@
                             <constraint firstAttribute="trailing" secondItem="eLC-3Z-U72" secondAttribute="trailing" id="vfF-9s-rDU"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="lTY-kF-uNF">
+                    <navigationItem key="navigationItem" title="Goals" id="lTY-kF-uNF">
                         <barButtonItem key="leftBarButtonItem" systemItem="edit" id="XDp-sM-5xD">
                             <connections>
                                 <action selector="editing:" destination="ZSb-0h-0iF" id="BtE-XD-3hr"/>

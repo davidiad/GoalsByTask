@@ -27,8 +27,6 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
     lazy var fetchedResultsController: NSFetchedResultsController = {
         
         let fetchRequest = NSFetchRequest(entityName: "Goal")
-        //fetchRequest.predicate = NSPredicate(format: "inCurrentList == %@", true)
-        //fetchRequest.predicate = NSPredicate(format: "numTimesFound > 0")
         
         // Add Sort Descriptors
         let sortDescriptor = NSSortDescriptor(key: "order", ascending: true)
@@ -66,8 +64,8 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
         }
         validateOrder()
  //TODO: guard statement for unwrapping fetched
-        feedbackLabel.text = "You have \(fetchedResultsController.fetchedObjects!.count) goals in your list"
-        
+        feedbackLabel.text = numGoalsFeedback()
+    
     }
     
     //MARK: - Verifying valid order
@@ -161,7 +159,7 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
                 return
             }
             insertedGoalName = goal.name!
-            feedbackLabel.text = "\(insertedGoalName) has been added to the goal list" + "\n" + "You have \(numGoals) goals in your list"
+            feedbackLabel.text = "\(insertedGoalName) has been added to the goal list" + "\n" + numGoalsFeedback()
             //TODO: scroll to the new goal automatically
             break;
             
@@ -190,7 +188,7 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
                     }
                 }
                 
-                feedbackLabel.text = "\(deletedGoalName) has been deleted from the goal list" + "\n" + "You have \(numGoals) goals in your list"
+                feedbackLabel.text = "\(deletedGoalName) has been deleted from the goal list" + "\n" + numGoalsFeedback()
             }
             break;
             
@@ -319,6 +317,15 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
     
     // MARK:  Unwind segue
     @IBAction func cancelToGoalsViewController(segue:UIStoryboardSegue) {
+    }
+    
+    // MARK:- Helper function for feedback
+    func numGoalsFeedback () -> String {
+        if numGoals == 1 {
+            return "You have \(numGoals) goal in your list"
+        } else {
+            return "You have \(numGoals) goals in your list"
+        }
     }
 
 }

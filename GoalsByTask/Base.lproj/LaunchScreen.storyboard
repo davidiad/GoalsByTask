@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8150" systemVersion="15A204g" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" initialViewController="01J-lp-oVM">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8122"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -13,15 +14,51 @@
                         <viewControllerLayoutGuide type="bottom" id="xb3-aO-Qok"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <animations/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e1G-rQ-F9T">
+                                <rect key="frame" x="0.0" y="692" width="414" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="Zxd-1e-MWW"/>
+                                </constraints>
+                                <items/>
+                            </toolbar>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ak8-Kx-evd">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="UCG-EH-esC"/>
+                                </constraints>
+                                <items>
+                                    <navigationItem id="jYs-CH-sbN"/>
+                                </items>
+                            </navigationBar>
+                            <imageView userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launch_bg" translatesAutoresizingMaskIntoConstraints="NO" id="93j-Xn-peo">
+                                <rect key="frame" x="0.0" y="44" width="414" height="648"/>
+                            </imageView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="ak8-Kx-evd" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="41U-pP-m12"/>
+                            <constraint firstItem="93j-Xn-peo" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="73U-3z-WLP"/>
+                            <constraint firstItem="e1G-rQ-F9T" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="A3r-Yo-GsC"/>
+                            <constraint firstItem="e1G-rQ-F9T" firstAttribute="trailing" secondItem="Ze5-6b-2t3" secondAttribute="trailing" id="Drg-rc-ZCp"/>
+                            <constraint firstItem="ak8-Kx-evd" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="V69-28-4bJ"/>
+                            <constraint firstItem="e1G-rQ-F9T" firstAttribute="bottom" secondItem="xb3-aO-Qok" secondAttribute="top" id="Zzt-f7-J58"/>
+                            <constraint firstItem="93j-Xn-peo" firstAttribute="top" secondItem="ak8-Kx-evd" secondAttribute="bottom" id="cTF-qi-1kZ"/>
+                            <constraint firstItem="93j-Xn-peo" firstAttribute="trailing" secondItem="Ze5-6b-2t3" secondAttribute="trailing" id="n5X-mp-CXZ"/>
+                            <constraint firstItem="93j-Xn-peo" firstAttribute="bottom" secondItem="e1G-rQ-F9T" secondAttribute="top" id="vK7-yn-Ppd"/>
+                            <constraint firstItem="ak8-Kx-evd" firstAttribute="trailing" secondItem="Ze5-6b-2t3" secondAttribute="trailing" id="yd6-i4-0MY"/>
+                        </constraints>
                     </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="launch_bg" width="414" height="628"/>
+    </resources>
 </document>

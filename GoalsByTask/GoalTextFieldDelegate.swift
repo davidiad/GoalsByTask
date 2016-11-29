@@ -35,9 +35,8 @@ class GoalTextFieldDelegate: NSObject, UITextFieldDelegate {
         textField.autocorrectionType = .No
         
         // While editing, set a background color for the text, so the user has a cue that they are editing text
-        let bgcolor = UIColor(hue: 0.72, saturation: 0.1, brightness: 0.9, alpha: 1.0)
+        let bgcolor = UIColor(hue: 0.1, saturation: 0.09, brightness: 1.0, alpha: 1.0)
         textField.backgroundColor = bgcolor
-
     }
     
     
