@@ -11,19 +11,41 @@ import CoreData
 
 class TasksViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
+    //MARK: Constants
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+    let goalTextFieldDelegate = GoalTextFieldDelegate()
+    
+    //MARK: Vars
+    var currentGoal: Goal?
+    
+    lazy var fetchedResultsController: NSFetchedResultsController = {
+        
+        let fetchRequest = NSFetchRequest(entityName: "Task")
+        fetchRequest.predicate = NSPredicate(format: "goal == %@", self.currentGoal!)
+        
+        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+        
+        fetchedResultsController.delegate = self
+        
+        return fetchedResultsController
+    }()
+    
     // vars to hold data to pass back to parent view controller
     var goalNameEdited: String?
     var numTasksAdded: Int = 0
     
+    //MARK: Outlets
     @IBOutlet weak var tasksTableView: UITableView!
-    
     @IBOutlet weak var goalName: UITextField!
-    
     @IBOutlet weak var feedbackLabel: UILabel!
-    
     @IBOutlet weak var taskNameTextField: UITextField!
-    
     @IBOutlet weak var addTaskButton: UIButton!
+    
+    //MARK: Actions
     @IBAction func createTask(sender: AnyObject) {
         
         view.endEditing(true) // dismiss the keyboard
@@ -45,35 +67,13 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
             feedbackLabel.text = ("\(newTaskName) has been added to the task list")
             taskNameTextField.text = "" // reset the textfield to blank after the task has been added to list
             addTaskButton.enabled = false // Disable button because textfield is now empty again
-            numTasksAdded += 1
+            numTasksAdded += 1 // Track number of tasks added for user feedback field
         }
     }
-    
-    var currentGoal: Goal?
-    let goalTextFieldDelegate = GoalTextFieldDelegate()
-    
-    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-    let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
-    
-    lazy var fetchedResultsController: NSFetchedResultsController = {
-        
-        let fetchRequest = NSFetchRequest(entityName: "Task")
-        fetchRequest.predicate = NSPredicate(format: "goal == %@", self.currentGoal!)
-        
-        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
-        
-        fetchedResultsController.delegate = self
-        
-        return fetchedResultsController
-    }()
     
     //MARK: - App lifecycle
     
     override func viewDidLoad() {
-        
         
         super.viewDidLoad()
         
@@ -133,40 +133,13 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
         textField.backgroundColor = UIColor.whiteColor()
     }
     
-    //MARK:-
-    
-    func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
-        if let controller = viewController as? GoalsTableViewController {
-            // pass data back to parent VC.
-            // goalNameEdited should be nil if the goal name was not changed
-            var feedbackLine1 = ""
-            var feedbackLine2 = ""
-            if goalNameEdited != nil {
-                feedbackLine1 = "The goal is now: \(goalNameEdited!)"
-            } else {
-                feedbackLine1 = "The goal: \((currentGoal?.name)!)"
-            }
-            if numTasksAdded > 0 {
-                var pluralize = "tasks have"
-                if numTasksAdded == 1 {
-                    pluralize = "task has"
-                }
-                feedbackLine2 = "\(String(numTasksAdded)) \(pluralize) been added to the goal"
-            }
-            controller.feedbackLabel.text = feedbackLine1 + "\n" + feedbackLine2
-        }
-    }
-    
-    // MARK: - Unwind segue
-    @IBAction func cancelToGoalsViewController(segue:UIStoryboardSegue) {
-    }
-    
     // MARK: - Textfield editing
+    
     // Cancels textfield editing when user touches outside the textfield
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-      
-            view.endEditing(true)
-
+        
+        view.endEditing(true)
+        
         super.touchesBegan(touches, withEvent:event)
     }
     
@@ -176,30 +149,45 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
         return true
     }
     
-    //MARK: - Core Data
+    //MARK:- Navigation
     
-    func saveNameChange() {
-        if currentGoal != nil {
-            if goalName.text == "" {
-                feedbackLabel.text = "Please don't leave the Goal name blank"
-                // if the goal name was blank, replace it with the current name
-                if currentGoal != nil {
-                    goalName.text = currentGoal?.name
-                }
-                
+    // To pass data back to parent view controller for user feedback
+    func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
+        if let controller = viewController as? GoalsTableViewController {
+            // goalNameEdited should be nil if the goal name was not changed
+            var feedbackLine1 = ""
+            var feedbackLine2 = ""
+            if goalNameEdited != nil {
+                feedbackLine1 = "The goal is now: \(goalNameEdited!)"
             } else {
-                currentGoal?.name = goalName.text
-                dispatch_async(dispatch_get_main_queue()) {
-                    self.appDelegate.saveContext()
+                // Note: the goal may have been edited, but if the back button is then tapped (with no other action), the app will not know that. So get the latest name directly from the textfield
+                if let currentText = goalName.text {
+                    feedbackLine1 = "The goal: \(currentText)"
                 }
-                feedbackLabel.text = "The goal is now: \((currentGoal?.name)!)"
-                // save the data to pass back to parent view controller
-                goalNameEdited = goalName.text
             }
-        } else {
-            feedbackLabel.text = "There is no current goal"
+            if numTasksAdded > 0 {
+                var pluralize = "tasks have"
+                if numTasksAdded == 1 {
+                    pluralize = "task has"
+                }
+                feedbackLine2 = "\(String(numTasksAdded)) \(pluralize) been added to the goal"
+            } else { // no tasks were added, so list the total number of tasks
+                if let numTasks = fetchedResultsController.fetchedObjects?.count {
+                    if numTasks == 1 {
+                        feedbackLine2 = "\(numTasks) task"
+                    } else {
+                        feedbackLine2 = "\(numTasks) tasks"
+                    }
+                }
+            }
+            controller.feedbackLabel.text = feedbackLine1 + "\n" + feedbackLine2
         }
     }
+    
+    // Unwind segue to Goals table view controller
+    @IBAction func cancelToGoalsViewController(segue:UIStoryboardSegue) {
+    }
+    
     
     // MARK: - Table view data source
     
@@ -230,6 +218,7 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
         return cell
     }
+    
     
     // MARK:- FetchedResultsController delegate protocol
     
@@ -265,6 +254,31 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
                 tasksTableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Fade)
             }
             break;
+        }
+    }
+    
+    //MARK: - Core Data save + User feedback
+    
+    func saveNameChange() {
+        if currentGoal != nil {
+            if goalName.text == "" {
+                feedbackLabel.text = "Please don't leave the Goal name blank"
+                // if the goal name was blank, replace it with the current name
+                if currentGoal != nil {
+                    goalName.text = currentGoal?.name
+                }
+                
+            } else {
+                currentGoal?.name = goalName.text
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.appDelegate.saveContext()
+                }
+                feedbackLabel.text = "The goal is now: \((currentGoal?.name)!)"
+                // save the data to pass back to parent view controller
+                goalNameEdited = goalName.text
+            }
+        } else {
+            feedbackLabel.text = "There is no current goal"
         }
     }
 

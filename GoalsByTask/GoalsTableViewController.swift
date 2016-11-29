@@ -11,11 +11,22 @@ import CoreData
 
 class GoalsTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
     
-    @IBOutlet var goalsTableView: UITableView!
-    @IBOutlet weak var feedbackLabel: UILabel!
-    
+    //MARK: Constants
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+    
+    //MARK: Vars
+    var goalsAreMoving: Bool = false
+    
+    var numGoals: Int {
+        get {
+            guard let currentCount = fetchedResultsController.fetchedObjects?.count else {
+                // There are no existing goals
+                return 0
+            }
+            return currentCount
+        }
+    }
     
     lazy var fetchedResultsController: NSFetchedResultsController = {
         
@@ -32,17 +43,9 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
         return fetchedResultsController
     }()
     
-    var goalsAreMoving: Bool = false
-    
-    var numGoals: Int {
-        get {
-            guard let currentCount = fetchedResultsController.fetchedObjects?.count else {
-                // There are no existing goals
-                return 0
-            }
-            return currentCount
-        }
-    }
+    //MARK: Outlets
+    @IBOutlet var goalsTableView: UITableView!
+    @IBOutlet weak var feedbackLabel: UILabel!
     
     //MARK: - App lifecycle
     
@@ -59,12 +62,12 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
         
         // Pad the bottom of the table view so the toolbar doesn't cover the last cell
         goalsTableView.contentInset = UIEdgeInsetsMake(0.0, 0.0, 44.0, 0.0);
- //TODO: guard statement for unwrapping fetched
+
         feedbackLabel.text = numGoalsFeedback()
     
     }
     
-    //MARK: - Verifying valid order
+    //MARK: - Verify valid order
     //(in theory should never get out of order, but just in case)
     // checks that all goals have an order value. 
     // Would be good to check that all values are unique, and don't skip
@@ -77,7 +80,7 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
-    // helper to set a valid order of goals, if there is one or more that don't have an order value
+    // helper to set a valid order of goals, if there is one or more that doesn't have an order value
     func resetGoalOrder() {
         if let numGoals = fetchedResultsController.fetchedObjects?.count {
             for i in 0 ..< numGoals {
@@ -169,9 +172,8 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
         } else if editingStyle == .Insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
             let goal = fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
-            
+            managedObjectContext.insertObject(goal)
             dispatch_async(dispatch_get_main_queue()) {
-                self.managedObjectContext.insertObject(goal)
                 self.appDelegate.saveContext()
             }
         }
@@ -181,8 +183,8 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
     // Override to support rearranging the table view.
     func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
         
-        goalsAreMoving = true
-        // TODO: - put a dispatch async here, to make sure all moves are done before setting goalsAreMoving to false?
+        goalsAreMoving = true // flag to not update the table rows in the middle of moving rows
+        
         // Fetch Records
         let goalFromRow = fetchedResultsController.objectAtIndexPath(fromIndexPath) as! Goal
         let goalToRow = fetchedResultsController.objectAtIndexPath(toIndexPath) as! Goal

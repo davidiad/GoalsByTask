@@ -21,11 +21,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillResignActive(application: UIApplication) {
-        saveContext()
+        dispatch_async(dispatch_get_main_queue()) {
+            self.saveContext()
+        }
     }
 
     func applicationDidEnterBackground(application: UIApplication) {
-        saveContext()
+        dispatch_async(dispatch_get_main_queue()) {
+            self.saveContext()
+        }
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
@@ -37,7 +41,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(application: UIApplication) {
-        saveContext()
+        dispatch_async(dispatch_get_main_queue()) {
+            self.saveContext()
+        }
     }
 
     // MARK: - Core Data stack
@@ -87,18 +93,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Core Data Saving support
     
     func saveContext () {
-       // dispatch_async(dispatch_get_main_queue()) {
-            if self.managedObjectContext.hasChanges {
-                do {
-                    try self.managedObjectContext.save()
-                } catch {
-                    let nserror = error as NSError
-      
-                    NSLog("Unresolved error \(nserror), \(nserror.userInfo)")
-                }
+        
+        if self.managedObjectContext.hasChanges {
+            do {
+                try self.managedObjectContext.save()
+            } catch {
+                let nserror = error as NSError
+                
+                NSLog("Unresolved error \(nserror), \(nserror.userInfo)")
             }
-       // }
+        }
     }
-
+    
 }
 

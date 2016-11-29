@@ -11,17 +11,20 @@ import CoreData
 
 class GoalViewController: UIViewController {
     
-
+    //MARK: Constants
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
     let goalTextFieldDelegate = GoalTextFieldDelegate()
 
+    //MARK: Vars
     var goalOrder: Int?
     
+    //MARK: Outlets
     @IBOutlet weak var goalNameTextField: UITextField!
     @IBOutlet weak var feedbackLabel: UILabel!
-    
     @IBOutlet weak var createGoalButton: UIButton!
+    
+    //MARK: Actions
     @IBAction func createGoal(sender: AnyObject) {
         
         view.endEditing(true) // dismiss the keyboard
@@ -41,13 +44,13 @@ class GoalViewController: UIViewController {
             
             dispatch_async(dispatch_get_main_queue()) {
                 self.appDelegate.saveContext()
-                self.dismissViewControllerAnimated(true, completion: nil)
             }
+            self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
     
     
-    
+    //MARK: - App lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         goalNameTextField.delegate = goalTextFieldDelegate
@@ -59,6 +62,7 @@ class GoalViewController: UIViewController {
                                        object: nil)
     }
     
+    //MARK:- Textfield editing
     func textFieldDidChange(sender : AnyObject) {
         if let notification = sender as? NSNotification,
             textFieldChanged = notification.object as? UITextField

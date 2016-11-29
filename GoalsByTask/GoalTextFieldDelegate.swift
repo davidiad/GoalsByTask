@@ -15,12 +15,13 @@ class GoalTextFieldDelegate: NSObject, UITextFieldDelegate {
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         var result = true
-        // credit to globalnerdy.com/2015/01/03/how-to-program-an-ios-text-field-that-takes-only-numeric-input-with-a-maximum-length
-        // for tutorial how to limit allowed text
+        // credit for tutorial how to limit allowed text to:
+        // globalnerdy.com/2015/01/03/how-to-program-an-ios-text-field-that-takes-only-numeric-input-with-a-maximum-length
+        
         let textToCheck = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
         
         if string.characters.count > 0 {
-            let entryNotTooLong = textToCheck.characters.count < 50
+            let entryNotTooLong = textToCheck.characters.count < 70
             result = entryNotTooLong
         }
         return result

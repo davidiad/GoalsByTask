@@ -21,7 +21,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vna-8Z-sCJ">
                                 <rect key="frame" x="20" y="100" width="560" height="80"/>
                                 <subviews>
-                                    <textField autoresizesSubviews="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Enter goal name" textAlignment="center" minimumFontSize="12" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="djt-y5-hbT">
+                                    <textField autoresizesSubviews="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Enter goal name" textAlignment="center" minimumFontSize="9" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="djt-y5-hbT">
                                         <rect key="frame" x="2" y="28" width="556" height="50"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <color key="textColor" red="0.98922836780000001" green="0.41531395910000002" blue="0.031820401550000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -48,7 +48,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CDC-he-QLY">
-                                <rect key="frame" x="242.5" y="26" width="114" height="21.5"/>
+                                <rect key="frame" x="243" y="26" width="114" height="21.5"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="a7H-0Z-jOb"/>
                                     <constraint firstAttribute="width" constant="104" id="tts-1N-SyZ"/>
@@ -172,14 +172,14 @@
                                             <constraint firstAttribute="height" constant="1" id="ex6-GR-8AT"/>
                                         </constraints>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="yYS-ic-GKn">
-                                        <rect key="frame" x="152.5" y="5.5" width="296" height="33"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="700" verticalCompressionResistancePriority="600" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yYS-ic-GKn">
+                                        <rect key="frame" x="10" y="13" width="580" height="16.5"/>
                                         <attributedString key="attributedText">
                                             <fragment content="In the boxes above, edit the goal name, or add tasks to the goal.">
                                                 <attributes>
                                                     <color key="NSColor" red="0.096236079931259155" green="0.095350787043571472" blue="0.09538695216178894" alpha="1" colorSpace="calibratedRGB"/>
                                                     <font key="NSFont" size="14" name="HelveticaNeue"/>
-                                                    <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                 </attributes>
                                             </fragment>
                                         </attributedString>
@@ -191,15 +191,22 @@
                                     <constraint firstItem="yYS-ic-GKn" firstAttribute="centerX" secondItem="0xa-0F-X6u" secondAttribute="centerX" id="25K-dR-pkH"/>
                                     <constraint firstItem="NSj-gd-5rr" firstAttribute="leading" secondItem="0xa-0F-X6u" secondAttribute="leading" id="33T-ZF-wra"/>
                                     <constraint firstAttribute="trailing" secondItem="NSj-gd-5rr" secondAttribute="trailing" id="BVM-Hc-Nuu"/>
+                                    <constraint firstItem="yYS-ic-GKn" firstAttribute="leading" secondItem="0xa-0F-X6u" secondAttribute="leading" constant="10" id="CCm-r7-T2G"/>
                                     <constraint firstAttribute="height" constant="44" id="KqS-LW-prI"/>
+                                    <constraint firstItem="yYS-ic-GKn" firstAttribute="trailing" secondItem="0xa-0F-X6u" secondAttribute="trailing" constant="-10" id="Lwj-Hg-x23"/>
                                     <constraint firstItem="NSj-gd-5rr" firstAttribute="top" secondItem="0xa-0F-X6u" secondAttribute="top" id="cTn-kU-eaS"/>
                                     <constraint firstItem="yYS-ic-GKn" firstAttribute="centerY" secondItem="0xa-0F-X6u" secondAttribute="centerY" id="x8a-ZO-3Eg"/>
                                 </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="25K-dR-pkH"/>
+                                    </mask>
+                                </variation>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WTF-He-E6V">
                                 <rect key="frame" x="20" y="72" width="560" height="80"/>
                                 <subviews>
-                                    <textField autoresizesSubviews="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Enter goal name" textAlignment="center" minimumFontSize="12" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="hHT-r3-13p">
+                                    <textField autoresizesSubviews="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Enter goal name" textAlignment="center" minimumFontSize="9" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="hHT-r3-13p">
                                         <rect key="frame" x="2" y="28" width="556" height="50"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <color key="textColor" red="0.98922836780000001" green="0.41531395910000002" blue="0.031820401550000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -283,7 +290,7 @@
                                     <constraint firstItem="EdU-ZY-Jqv" firstAttribute="leading" secondItem="bwR-Fb-mgj" secondAttribute="leading" constant="2" id="taa-I0-vce"/>
                                 </constraints>
                             </view>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder=" Enter task name here" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="Xwk-RG-hgg">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder=" Enter task name here" textAlignment="natural" minimumFontSize="8" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="Xwk-RG-hgg">
                                 <rect key="frame" x="20" y="196" width="560" height="33"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="33" id="ghG-Rk-hzB"/>
@@ -370,11 +377,8 @@
                                                     </attributedString>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" preservesSuperviewLayoutMargins="YES" text="GoalName" lineBreakMode="clip" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1Nb-H4-4ZJ">
-                                                    <rect key="frame" x="28" y="12" width="350" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="350" id="Ddg-Df-WFp"/>
-                                                    </constraints>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="700" preservesSuperviewLayoutMargins="YES" text="GoalName" lineBreakMode="clip" baselineAdjustment="alignBaselines" minimumScaleFactor="0.40000000000000002" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1Nb-H4-4ZJ">
+                                                    <rect key="frame" x="28" y="12" width="545" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
@@ -390,6 +394,7 @@
                                             <constraints>
                                                 <constraint firstItem="ic4-GE-5tW" firstAttribute="trailing" secondItem="qK9-zF-ZhW" secondAttribute="trailing" constant="34" id="6Lf-QK-4aW"/>
                                                 <constraint firstItem="1Nb-H4-4ZJ" firstAttribute="leading" secondItem="XaL-CX-zha" secondAttribute="trailing" constant="10" id="QKD-Q7-f7o"/>
+                                                <constraint firstItem="1Nb-H4-4ZJ" firstAttribute="trailing" secondItem="ic4-GE-5tW" secondAttribute="leading" constant="-23" id="YaB-x9-pgC"/>
                                                 <constraint firstItem="1Nb-H4-4ZJ" firstAttribute="centerY" secondItem="qK9-zF-ZhW" secondAttribute="centerY" id="Zt9-dI-UgS"/>
                                                 <constraint firstItem="ic4-GE-5tW" firstAttribute="bottom" secondItem="qK9-zF-ZhW" secondAttribute="bottom" constant="-1" id="fdk-Eb-lg3"/>
                                                 <constraint firstItem="ic4-GE-5tW" firstAttribute="top" secondItem="qK9-zF-ZhW" secondAttribute="top" constant="1" id="rfB-FW-O4t"/>
@@ -431,7 +436,7 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="tJy-fv-dg5">
-                                        <rect key="frame" x="181.5" y="14.5" width="238" height="16.5"/>
+                                        <rect key="frame" x="181" y="14" width="238" height="16.5"/>
                                         <attributedString key="attributedText">
                                             <fragment content="Enter a name for your new goal above">
                                                 <attributes>
