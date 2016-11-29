@@ -12,13 +12,7 @@ import CoreData
 class GoalsTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
     
     @IBOutlet var goalsTableView: UITableView!
-    
     @IBOutlet weak var feedbackLabel: UILabel!
-    
-    @IBAction func editing(sender: UIBarButtonItem) {
-        self.editing = !self.editing
-        appDelegate.saveContext()
-    }
     
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
@@ -62,6 +56,9 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
             print("\(fetchError), \(fetchError.localizedDescription)")
         }
         validateOrder()
+        
+        // Pad the bottom of the table view so the toolbar doesn't cover the last cell
+        goalsTableView.contentInset = UIEdgeInsetsMake(0.0, 0.0, 44.0, 0.0);
  //TODO: guard statement for unwrapping fetched
         feedbackLabel.text = numGoalsFeedback()
     
@@ -69,7 +66,8 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
     
     //MARK: - Verifying valid order
     //(in theory should never get out of order, but just in case)
-    // checks that all goals have an order value. Would be good to check that all values are unique, and don't skip
+    // checks that all goals have an order value. 
+    // Would be good to check that all values are unique, and don't skip
     func validateOrder() {
         for goal: Goal in fetchedResultsController.fetchedObjects as! [Goal] {
             if goal.order == nil {
@@ -131,89 +129,27 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
-    // MARK:- FetchedResultsController delegate protocol
+    // MARK:- Table View editing
     
-    func controllerWillChangeContent(controller: NSFetchedResultsController) {
-        if !goalsAreMoving { // flag to avoid updating the table rows in the middle of moving
-            goalsTableView.beginUpdates()
-        }
-
+    // To allow the editing button to work in a generic view controller (not needed in a TableViewController)
+    override func setEditing(editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        goalsTableView.setEditing(editing, animated: animated)
     }
     
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
-        goalsTableView.endUpdates()
+    // De/activate the edit button for the table
+    @IBAction func editing(sender: UIBarButtonItem) {
+        self.editing = !self.editing
+        appDelegate.saveContext()
     }
     
-    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
-        switch (type) {
-            
-        case .Insert:
-
-            if let indexPath = newIndexPath {
-                goalsTableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-            }
-            var insertedGoalName = ""
-            guard let goal = anObject as? Goal else {
-                insertedGoalName = "A goal"
-                return
-            }
-            insertedGoalName = goal.name!
-            feedbackLabel.text = "\(insertedGoalName) has been added to the goal list" + "\n" + numGoalsFeedback()
-            //TODO: scroll to the new goal automatically
-            break;
-            
-        case .Delete:
-            if let indexPath = indexPath {
-                // save the name of the goal before deleting it (to use in user feedback, below)
-                var deletedGoalName = ""
-                guard let goal = anObject as? Goal else {
-                    deletedGoalName = "A goal"
-                    return
-                }
-                deletedGoalName = goal.name!
-                goalsTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-                
-                
-                // update the order (priority) of the cells remaining after the deletion
-                for i in indexPath.row ..< numGoals {
-                    let nextIndexPath = NSIndexPath(forRow: i, inSection: 0)
-                    if let cell = goalsTableView.cellForRowAtIndexPath(nextIndexPath) as? GoalCell {
-                        if let goal = fetchedResultsController.fetchedObjects![i] as? Goal {
-                            // since order counting is from 1, and index path counting is from 0,
-                            // setting to i reduces the order by 1, accounting for the deleted row
-                            goal.order = i + 1
-                            cell.priority.text = String(goal.order!)
-                        }
-                    }
-                }
-                
-                feedbackLabel.text = "\(deletedGoalName) has been deleted from the goal list" + "\n" + numGoalsFeedback()
-            }
-            break;
-            
-        case .Update:
-            if let indexPath = indexPath, let cell = goalsTableView.cellForRowAtIndexPath(indexPath) {
-                configureCell(cell, atIndexPath: indexPath)
-            }
-            break;
-            
-        case .Move:
-            // when the order is being edited by user, the cell is moved, so update the cell to match the new order
-            if let indexPath = indexPath, let cell = goalsTableView.cellForRowAtIndexPath(indexPath) {
-                configureCell(cell, atIndexPath: indexPath)
-            }
-            break;
-        }
-    }
-    
+    // MARK:- Table View delegate
     
     // Override to support conditional editing of the table view.
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
     }
-    
-
     
     // Override to support editing the table view.
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -230,10 +166,9 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
             let goal = fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
             managedObjectContext.insertObject(goal)
-        }    
+            //TODO: dispatch async here?
+        }
     }
-    
-
     
     
     // Override to support rearranging the table view.
@@ -288,11 +223,82 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
         return true
     }
     
-    // To allow the editing button to work in a generic view controller (not needed in a TableViewController)
-    override func setEditing(editing: Bool, animated: Bool) {
-        super.setEditing(editing, animated: animated)
-        goalsTableView.setEditing(editing, animated: animated)
+    
+    // MARK:- FetchedResultsController delegate protocol
+    
+    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+        if !goalsAreMoving { // flag to avoid updating the table rows in the middle of moving
+            goalsTableView.beginUpdates()
+        }
+        
     }
+    
+    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+        goalsTableView.endUpdates()
+    }
+    
+    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+        switch (type) {
+            
+        case .Insert:
+            
+            if let indexPath = newIndexPath {
+                goalsTableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                
+                var insertedGoalName = ""
+                guard let goal = anObject as? Goal else {
+                    insertedGoalName = "A goal"
+                    return
+                }
+                insertedGoalName = goal.name!
+                feedbackLabel.text = "\(insertedGoalName) has been added to the goal list" + "\n" + numGoalsFeedback()
+            }
+            break;
+            
+        case .Delete:
+            if let indexPath = indexPath {
+                // save the name of the goal before deleting it (to use in user feedback, below)
+                var deletedGoalName = ""
+                guard let goal = anObject as? Goal else {
+                    deletedGoalName = "A goal"
+                    return
+                }
+                deletedGoalName = goal.name!
+                goalsTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                
+                
+                // update the order (priority) of the cells remaining after the deletion
+                for i in indexPath.row ..< numGoals {
+                    let nextIndexPath = NSIndexPath(forRow: i, inSection: 0)
+                    if let cell = goalsTableView.cellForRowAtIndexPath(nextIndexPath) as? GoalCell {
+                        if let goal = fetchedResultsController.fetchedObjects![i] as? Goal {
+                            // since order counting is from 1, and index path counting is from 0,
+                            // setting to i reduces the order by 1, accounting for the deleted row
+                            goal.order = i + 1
+                            cell.priority.text = String(goal.order!)
+                        }
+                    }
+                }
+                
+                feedbackLabel.text = "\(deletedGoalName) has been deleted from the goal list" + "\n" + numGoalsFeedback()
+            }
+            break;
+            
+        case .Update:
+            if let indexPath = indexPath, let cell = goalsTableView.cellForRowAtIndexPath(indexPath) {
+                configureCell(cell, atIndexPath: indexPath)
+            }
+            break;
+            
+        case .Move:
+            // when the order is being edited by user, the cell is moved, so update the cell to match the new order
+            if let indexPath = indexPath, let cell = goalsTableView.cellForRowAtIndexPath(indexPath) {
+                configureCell(cell, atIndexPath: indexPath)
+            }
+            break;
+        }
+    }
+    
     
     // MARK: - Navigation
 
@@ -314,8 +320,9 @@ class GoalsTableViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
-    // MARK:  Unwind segue from Create Goal view controller
+    // Unwind segue from Create Goal view controller
     @IBAction func cancelToGoalsViewController(segue:UIStoryboardSegue) {
+       
     }
     
     // MARK:- Helper function for feedback
